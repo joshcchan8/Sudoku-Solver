@@ -1,0 +1,53 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    background-color: white;
+}
+
+.body {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.menu {
+    width: 100%;
+    background-color: rgb(161, 161, 242);
+    height: 15vh;
+    border: 0px solid black;
+}
+
+.separator {
+    background-color: black;
+    height: 1vh;
+    width: 100%;
+}
+
+.board_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 83vh;
+}
+
+.board {
+    width: 450px;
+    height: 450px;
+    background-color: yellow;
+    border: 3px solid black;
+    margin: 3vh 0 2vh 0;
+}
+
+.numbers {
+    width: 450px;
+    height: 50px;
+    background-color: yellow;
+    border: 3px solid black;
+}
+
+
