@@ -1,7 +1,50 @@
-var selectedNum = null;
-var selectedTile = null;
+// var selectedNum = null;
+// var selectedTile = null;
 
-var lives = 0;
+// var lives = 0;
+
+
+// Set up number divs (bottom row)
+// Ex. <div id="1" class="number"></div>
+//     <div id="2" class="number"></div>
+
+window.onload = function() {
+  setNumbers();
+}
+
+function setNumbers() {
+  for (let num = 1; num < 10; num++) {
+    var number = document.create("div");
+    number.id = num;
+    number.classList.add("number");
+    number.innerHTML = num;
+    document.getElementById("numbers").appendChild(number);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -28,10 +71,6 @@ var sudoku1Answer = [
     ["9","6","1","5","3","7","2","8","4"],
     ["2","8","7","4","1","9","6","3","5"],
     ["3","4","5","2","8","6","1","7","9"]];
-
-
-
-
 
 
 // SUDOKU SOLVER FUNCTIONS
@@ -132,13 +171,7 @@ function changeBoardToObject(board) {
 }
 
 
-
-
-
-
-
-
-// TESTING
+// TESTING SOLVER
 
 // Verifies sudoku matches answer
 function verifySudokuAnswer(sudoku, answer) {
