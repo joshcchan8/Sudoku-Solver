@@ -8,6 +8,8 @@ html {
 }
 
 .body {
+    font-family: Arial, Helvetica, sans-serif;
+
     display: flex;
     text-align: center;
     justify-content: center;
@@ -35,25 +37,59 @@ html {
     height: 83vh;
 }
 
-.board {
+#board {
     width: 450px;
     height: 450px;
-    background-color: yellow;
+    background-color: rgb(237, 236, 236);
     border: 3px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     margin: 3vh 0 2vh 0;
 }
 
-.numbers {
+.row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.space {
+    width: 46px;
+    height: 46px;
+    border: 1px solid black;
+    border-radius: 5px;
+    display: flex;
+
+    /* Text */
+    font-size: 20px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+}
+
+#numbers {
     width: 450px;
     height: 50px;
-    background-color: yellow;
+    background-color: rgb(237, 236, 236);
     border: 3px solid black;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .number {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     border: 1px solid black;
+    border-radius: 5px;
+    display: flex;
+
+    /* Text */
+    font-size: 20px;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
 }
-
-

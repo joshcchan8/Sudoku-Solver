@@ -10,20 +10,40 @@
 
 window.onload = function() {
   setNumbers();
+  setBoard();
 }
 
+// Sets the panel for choosing numbers
 function setNumbers() {
   for (let num = 1; num < 10; num++) {
-    var number = document.create("div");
+    var number = document.createElement("div");
     number.id = num;
+    number.innerText = num;
     number.classList.add("number");
-    number.innerHTML = num;
     document.getElementById("numbers").appendChild(number);
   }
 }
 
+// Sets the sodoku board
+function setBoard() {
+  for(let r = 1; r < 10; r++) {
+    var row = document.createElement("div");
+    row.id = "row" + r;
+    row.classList.add("row");
 
+    for(let c = 1; c < 10; c++) {
+      var space = document.createElement("div");
+      space.id = "row-" + r.toString() + "-col-" + c.toString();
+      space.classList.add("space");
+      row.appendChild(space);
+    }
 
+    document.getElementById("board").appendChild(row);
+  }
+
+  // Test space coords work!
+  // document.getElementById("row-1-col-2").innerText = "HI";
+}
 
 
 
