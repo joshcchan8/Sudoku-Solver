@@ -18,7 +18,7 @@ html {
 
 .menu {
     width: 100%;
-    background-color: rgb(161, 161, 242);
+    background-color: rgb(205, 199, 199);
     height: 15vh;
     border: 0px solid black;
 }
@@ -44,15 +44,11 @@ html {
     border: 3px solid black;
     border-radius: 5px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin: 3vh 0 2vh 0;
-}
-
-.row {
-    display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
+    margin: 3vh 0 2vh 0;
+    cursor: pointer;
 }
 
 .space {
@@ -78,9 +74,10 @@ html {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    cursor: pointer;
 }
 
-.number {
+.defaultNumber {
     width: 46px;
     height: 46px;
     border: 1px solid black;
@@ -92,4 +89,17 @@ html {
     font-weight: bold;
     justify-content: center;
     align-items: center;
+}
+
+.placedNumber {
+    /* Text */
+    color:rgb(120, 120, 125);
+}
+
+.selectedNumber {
+    background-color:rgb(171, 171, 180);
+}
+
+.selectedSpace {
+    background-color:rgb(171, 171, 180);
 }

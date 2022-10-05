@@ -1,5 +1,5 @@
-// var selectedNum = null;
-// var selectedTile = null;
+var selectedNumber = null;
+var selectedSpace = null;
 
 // var lives = 0;
 
@@ -8,9 +8,37 @@
 // Ex. <div id="1" class="number"></div>
 //     <div id="2" class="number"></div>
 
+
+
+
+// Boards and Answers for Testing
+
+var sudoku1 = [
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]];
+
+var sudoku1Answer = [
+  ["5","3","4","6","7","8","9","1","2"],
+  ["6","7","2","1","9","5","3","4","8"],
+  ["1","9","8","3","4","2","5","6","7"],
+  ["8","5","9","7","6","1","4","2","3"],
+  ["4","2","6","8","5","3","7","9","1"],
+  ["7","1","3","9","2","4","8","5","6"],
+  ["9","6","1","5","3","7","2","8","4"],
+  ["2","8","7","4","1","9","6","3","5"],
+  ["3","4","5","2","8","6","1","7","9"]];
+
+
 window.onload = function() {
   setNumbers();
-  setBoard();
+  setBoard(sudoku1);
 }
 
 // Sets the panel for choosing numbers
@@ -19,30 +47,56 @@ function setNumbers() {
     var number = document.createElement("div");
     number.id = num;
     number.innerText = num;
-    number.classList.add("number");
+    number.classList.add("defaultNumber");
+    number.addEventListener("click", selectNumber);
     document.getElementById("numbers").appendChild(number);
   }
 }
 
 // Sets the sodoku board
-function setBoard() {
-  for(let r = 1; r < 10; r++) {
-    var row = document.createElement("div");
-    row.id = "row" + r;
-    row.classList.add("row");
-
-    for(let c = 1; c < 10; c++) {
+// Spaces have ID: row-col ex. 3-4 for row 4, column 3.
+// Rows and columns are from 0-8.
+function setBoard(board) {
+  for(let r = 0; r < 9; r++) {
+    for(let c = 0; c < 9; c++) {
       var space = document.createElement("div");
-      space.id = "row-" + r.toString() + "-col-" + c.toString();
+      space.id = r.toString() + "-" + c.toString();
       space.classList.add("space");
-      row.appendChild(space);
-    }
 
-    document.getElementById("board").appendChild(row);
+      // Leaves space blank unless there is a value.
+      if (board[r][c] != ".") {
+        space.innerText = board[r][c];
+      }
+
+      space.addEventListener("click", selectSpace);
+      document.getElementById("board").appendChild(space);
+    }
+  }
+}
+
+// Allows user to select numbers in the bottom bar
+function selectNumber() {
+  if (selectedNumber != null) {
+    selectedNumber.classList.remove("selectedNumber")
+  }
+  selectedNumber = this;
+  selectedNumber.classList.add("selectedNumber");
+}
+
+function selectSpace() {
+
+  if (selectedSpace != null) {
+    selectedSpace.classList.remove("selectedSpace")
   }
 
-  // Test space coords work!
-  // document.getElementById("row-1-col-2").innerText = "HI";
+  if (selectedNumber != null) {
+    if (this.innerText == "") {
+      selectedSpace = this;
+      selectedSpace.classList.add("selectedSpace");
+      selectedSpace.classList.add("placedNumber");
+      selectedSpace.innerText = selectedNumber.innerText;
+    }
+  }
 }
 
 
@@ -61,36 +115,6 @@ function setBoard() {
 
 
 
-
-
-
-
-
-
-
-// Boards and Answers for Testing
-
-var sudoku1 = [
-    ["5","3",".",".","7",".",".",".","."],
-    ["6",".",".","1","9","5",".",".","."],
-    [".","9","8",".",".",".",".","6","."],
-    ["8",".",".",".","6",".",".",".","3"],
-    ["4",".",".","8",".","3",".",".","1"],
-    ["7",".",".",".","2",".",".",".","6"],
-    [".","6",".",".",".",".","2","8","."],
-    [".",".",".","4","1","9",".",".","5"],
-    [".",".",".",".","8",".",".","7","9"]];
-
-var sudoku1Answer = [
-    ["5","3","4","6","7","8","9","1","2"],
-    ["6","7","2","1","9","5","3","4","8"],
-    ["1","9","8","3","4","2","5","6","7"],
-    ["8","5","9","7","6","1","4","2","3"],
-    ["4","2","6","8","5","3","7","9","1"],
-    ["7","1","3","9","2","4","8","5","6"],
-    ["9","6","1","5","3","7","2","8","4"],
-    ["2","8","7","4","1","9","6","3","5"],
-    ["3","4","5","2","8","6","1","7","9"]];
 
 
 // SUDOKU SOLVER FUNCTIONS
@@ -191,15 +215,9 @@ function changeBoardToObject(board) {
 }
 
 
+
+
 // TESTING SOLVER
-
-// Verifies sudoku matches answer
-function verifySudokuAnswer(sudoku, answer) {
-    return solveSudoku(sudoku) === changeBoardToObject(answer);
-}
-
-// Array containing result (solved board)
-var test = solveSudoku(sudoku1);
 
 // document.write('<p>' + test[i] + '<p>');
 
