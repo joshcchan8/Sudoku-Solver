@@ -1,5 +1,6 @@
 var selectedNumber = null;
 var selectedSpace = null;
+var generatedBoard = null;
 
 // var lives = 0;
 
@@ -36,6 +37,8 @@ var sudoku1Answer = [
   ["3","4","5","2","8","6","1","7","9"]];
 
 
+// SETUP
+
 window.onload = function() {
   setNumbers();
   setBoard(sudoku1);
@@ -47,7 +50,7 @@ function setNumbers() {
     var number = document.createElement("div");
     number.id = num;
     number.innerText = num;
-    number.classList.add("defaultNumber");
+    number.classList.add("number");
     number.addEventListener("click", selectNumber);
     document.getElementById("numbers").appendChild(number);
   }
@@ -57,15 +60,27 @@ function setNumbers() {
 // Spaces have ID: row-col ex. 3-4 for row 4, column 3.
 // Rows and columns are from 0-8.
 function setBoard(board) {
+
+  generatedBoard = board;
+
   for(let r = 0; r < 9; r++) {
     for(let c = 0; c < 9; c++) {
       var space = document.createElement("div");
       space.id = r.toString() + "-" + c.toString();
       space.classList.add("space");
 
+      if (r == 2 || r == 5) {
+        space.classList.add("horizontalGap");
+      }
+
+      if (c == 2 || c == 5) {
+        space.classList.add("verticalGap");
+      }
+
       // Leaves space blank unless there is a value.
       if (board[r][c] != ".") {
         space.innerText = board[r][c];
+        space.classList.add("defaultSpace");
       }
 
       space.addEventListener("click", selectSpace);
@@ -93,31 +108,13 @@ function selectSpace() {
     if (this.innerText == "") {
       selectedSpace = this;
       selectedSpace.classList.add("selectedSpace");
-      selectedSpace.classList.add("placedNumber");
       selectedSpace.innerText = selectedNumber.innerText;
     }
   }
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// SUDOKU SOLVER FUNCTIONS
+// SUDOKU SOLVER
 
 // Returns coords of next empty space, if none available, return False
 function findEmptySpace(board) {
@@ -210,9 +207,27 @@ function solveSudoku(board){
     }
 }
 
-function changeBoardToObject(board) {
-    return board;
+
+// Check if Sudoku is Solved
+
+function checkIfSolved() {
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+
+      // If board does not match solution, return false
+      if (document.getElementById(r.toString() + "-" + c.toString()).innerText != (solveSudoku(generatedBoard))[r][c]) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
+
+
+
+
 
 
 
