@@ -1,5 +1,6 @@
 var selectedNumber = null;
 var selectedSpace = null;
+var deleteSpace = false;
 var generatedBoard = null;
 
 // var lives = 0;
@@ -42,6 +43,7 @@ var sudoku1Answer = [
 window.onload = function() {
   setNumbers();
   setBoard(sudoku1);
+  setDelete();
 }
 
 // Sets the panel for choosing numbers
@@ -94,14 +96,25 @@ function selectNumber() {
   if (selectedNumber != null) {
     selectedNumber.classList.remove("selectedNumber")
   }
+  if (this == selectedNumber) {
+    selectedNumber.classList.remove("selectedNumber")
+    selectedNumber = null;
+    if (selectedSpace != null) {
+      selectedSpace.classList.remove("selectedSpace");
+      selectedSpace.classList.add("placedSpace");
+    }
+    return;
+  }
   selectedNumber = this;
   selectedNumber.classList.add("selectedNumber");
 }
 
+// Allows user to place numbers into spaces on the board
 function selectSpace() {
 
   if (selectedSpace != null) {
-    selectedSpace.classList.remove("selectedSpace")
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.add("placedSpace");
   }
 
   if (selectedNumber != null) {
@@ -112,6 +125,30 @@ function selectSpace() {
     }
   }
 }
+
+// Initializes delete button
+function setDelete() {
+  var delete_button = document.createElement("div");
+  delete_button.id = "delete_button";
+  delete_button.innerText = "DELETE";
+  delete_button.addEventListener("click", deleteNumbers);
+  document.getElementById("delete_container").appendChild(delete_button);
+}
+
+// Allows user to delete numbers from the board
+function deleteNumbers() {
+  if (deleteSpace == false) {
+    deleteSpace = true;
+    this.classList.add("deleteSelected");
+  } else {
+    deleteSpace = false;
+    this.classList.remove("deleteSelected");
+  }
+}
+
+
+
+
 
 
 // SUDOKU SOLVER

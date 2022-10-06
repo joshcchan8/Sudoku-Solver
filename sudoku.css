@@ -5,7 +5,7 @@
 }
 
 html {
-    background-color: white;
+    background-color: rgb(4, 20, 32);
 }
 
 .body {
@@ -17,9 +17,10 @@ html {
 }
 
 .gameplay {
-    height: 90vh;
-    width: 90vw;
+    height: 100vh;
+    width: 100vw;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
@@ -34,21 +35,43 @@ html {
 }
 
 .menu {
-    border: 3px solid #0978bd;
+    background-color: rgb(11, 56, 75);
+    border: 3px solid #3fa1de;
     border-radius: 5px;
-    height: 450px;
+    height: 430px;
     width: 200px;
-    margin: 3vh 0 2vh 50px;
+    margin: 3vh 0 5vh 0;
     padding: 2px;
+    cursor: pointer;
 }
 
 .delete_container {
-    border: 3px solid #0978bd;
+    background-color: rgb(11, 56, 75);
+    border: 3px solid #3fa1de;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 5px;
-    height: 50px;
+    height: 70px;
     width: 200px;
-    margin: 3vh 0 2vh 50px;
     padding: 2px;
+    cursor: pointer;
+}
+
+#delete_button {
+    background-color: rgb(11, 56, 75);
+    border: 3px solid #3fa1de;
+    border-radius: 5px;
+    height: 70%;
+    width: 80%;
+
+    /* Text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    color: #d3e9f7;
+    letter-spacing: 1px;
 }
 
 .board_container {
@@ -57,21 +80,21 @@ html {
     justify-content: center;
     align-items: center;
     height: 90vh;
-    width: 500px;
+    width: 450px;
     margin-right: 5vw;
 }
 
 #board {
     width: 450px;
     height: 450px;
-    background-color: white;
-    border: 3px solid #0978bd;
+    background-color: rgb(11, 56, 75);
+    border: 3px solid #3fa1de;
     border-radius: 5px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    margin: 3vh 0 2vh 0;
+    margin: 3vh 0 5vh 0;
     padding: 2px;
     cursor: pointer;
     color: #0978bd;
@@ -80,7 +103,7 @@ html {
 .space {
     width: 44px;
     height: 44px;
-    border: 1px solid #0978bd;
+    border: 1px solid #3fa1de;
     border-radius: 5px;
     display: flex;
 
@@ -98,21 +121,20 @@ html {
 #numbers {
     width: 450px;
     height: 50px;
-    background-color: white;
-    border: 3px solid #0978bd;
+    background-color: rgb(11, 56, 75);
+    border: 3px solid #3fa1de;
     border-radius: 5px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 2px;
     cursor: pointer;
-    color: #0978bd;
 }
 
 .number {
     width: 44px;
     height: 44px;
-    border: 1px solid #0978bd;
+    border: 1px solid #3fa1de;
     border-radius: 5px;
     display: flex;
 
@@ -121,14 +143,24 @@ html {
     font-weight: bold;
     justify-content: center;
     align-items: center;
+    color: #d3e9f7;
 }
 
 .selectedNumber {
-    background-color: #a3cdf3;
+    background-color: #8ec0eb;
+    color: #0978bd;
 }
 
 .selectedSpace {
-    background-color:#a3cdf3;
+    background-color: #8ec0eb;
+}
+
+.placedSpace {
+    color: #d3e9f7;
+}
+
+.deleteSelected {
+    background-color: #8ec0eb;
 }
 
 .horizontalGap {
