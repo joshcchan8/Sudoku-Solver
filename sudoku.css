@@ -45,7 +45,7 @@ html {
     cursor: pointer;
 }
 
-.delete_container {
+#delete_container {
     background-color: rgb(11, 56, 75);
     border: 3px solid #3fa1de;
     display: flex;
@@ -58,7 +58,7 @@ html {
     cursor: pointer;
 }
 
-#delete_button {
+.delete_button {
     background-color: rgb(11, 56, 75);
     border: 3px solid #3fa1de;
     border-radius: 5px;
@@ -70,8 +70,9 @@ html {
     justify-content: center;
     align-items: center;
     font-size: 25px;
-    color: #d3e9f7;
+    font-weight: bold;
     letter-spacing: 1px;
+    color: #d3e9f7;
 }
 
 .board_container {
@@ -161,6 +162,7 @@ html {
 
 .deleteSelected {
     background-color: #8ec0eb;
+    color: #0978bd;
 }
 
 .horizontalGap {

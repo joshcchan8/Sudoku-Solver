@@ -126,28 +126,24 @@ function selectSpace() {
   }
 }
 
-// Initializes delete button
 function setDelete() {
   var delete_button = document.createElement("div");
   delete_button.id = "delete_button";
-  delete_button.innerText = "DELETE";
-  delete_button.addEventListener("click", deleteNumbers);
+  delete_button.innerText = "Delete";
+  delete_button.classList.add("delete_button");
+  delete_button.addEventListener("click", selectDelete);
   document.getElementById("delete_container").appendChild(delete_button);
 }
 
-// Allows user to delete numbers from the board
-function deleteNumbers() {
-  if (deleteSpace == false) {
-    deleteSpace = true;
+function selectDelete() {
+  if (!deleteSpace) {
     this.classList.add("deleteSelected");
+    deleteSpace = true;
   } else {
-    deleteSpace = false;
     this.classList.remove("deleteSelected");
+    deleteSpace = false;
   }
 }
-
-
-
 
 
 
