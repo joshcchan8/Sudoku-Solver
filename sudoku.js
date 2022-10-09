@@ -1,5 +1,6 @@
 var selectedNumber = null;
 var selectedSpace = null;
+var placeSpace = false;
 var deleteSpace = false;
 var generatedBoard = null;
 
@@ -91,41 +92,6 @@ function setBoard(board) {
   }
 }
 
-// Allows user to select numbers in the bottom bar
-function selectNumber() {
-  if (selectedNumber != null) {
-    selectedNumber.classList.remove("selectedNumber")
-  }
-  if (this == selectedNumber) {
-    selectedNumber.classList.remove("selectedNumber")
-    selectedNumber = null;
-    if (selectedSpace != null) {
-      selectedSpace.classList.remove("selectedSpace");
-      selectedSpace.classList.add("placedSpace");
-    }
-    return;
-  }
-  selectedNumber = this;
-  selectedNumber.classList.add("selectedNumber");
-}
-
-// Allows user to place numbers into spaces on the board
-function selectSpace() {
-
-  if (selectedSpace != null) {
-    selectedSpace.classList.remove("selectedSpace");
-    selectedSpace.classList.add("placedSpace");
-  }
-
-  if (selectedNumber != null) {
-    if (this.innerText == "") {
-      selectedSpace = this;
-      selectedSpace.classList.add("selectedSpace");
-      selectedSpace.innerText = selectedNumber.innerText;
-    }
-  }
-}
-
 function setDelete() {
   var delete_button = document.createElement("div");
   delete_button.id = "delete_button";
@@ -135,14 +101,114 @@ function setDelete() {
   document.getElementById("delete_container").appendChild(delete_button);
 }
 
-function selectDelete() {
-  if (!deleteSpace) {
-    this.classList.add("deleteSelected");
-    deleteSpace = true;
-  } else {
-    this.classList.remove("deleteSelected");
+// Allows user to select numbers in the bottom bar
+function selectNumber() {
+  
+  if (deleteSpace == true) {
+    document.getElementById("delete_button").classList.remove("deleteSelected");
     deleteSpace = false;
   }
+
+  if (!selectedNumber) {
+    selectedNumber = this;
+    selectedNumber.classList.add("selectedNumber");
+    placeSpace = true;
+  } else if (selectedNumber == this) {
+    selectedNumber.classList.remove("selectedNumber");
+    selectedNumber = null;
+    placeSpace = false;
+  } else {
+    selectedNumber.classList.remove("selectedNumber");
+    selectedNumber = this;
+    selectedNumber.classList.add("selectedNumber");
+    placeSpace = true;
+  }
+}
+
+// Allows user to select the delete button
+function selectDelete() {
+
+  selectedSpace.classList.remove("selectedSpace");
+  selectedSpace.classList.add("placedSpace");
+  selectedSpace = null;
+
+  if (selectedNumber) {
+    selectedNumber.classList.remove("selectedNumber");
+    placeSpace = false;
+    selectedNumber = null;
+  }
+
+  if (deleteSpace) {
+    this.classList.remove("deleteSelected");
+    deleteSpace = false;
+  } else {
+    this.classList.add("deleteSelected");
+    deleteSpace = true;
+  }
+}
+
+// Determines what happens when a space is selected
+function selectSpace() {
+  if (placeSpace) {
+    fillSpace(this);
+  } else if (deleteSpace) {
+    deleteSelectedSpace(this);
+  } else {
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace = null;
+  }
+}
+
+// Fills the space with the selected number
+function fillSpace(space) {
+
+  if (space.classList.contains("defaultSpace")) {
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.add("placedSpace");
+    selectedSpace = null;
+    return;
+  }
+
+  if (space.innerText != "") {
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.add("placedSpace");
+    selectedSpace = null;
+    return;
+  }
+
+  if (!selectedSpace) {                  // if there is no selected space
+    selectedSpace = space;
+    selectedSpace.classList.add("selectedSpace");
+    selectedSpace.innerText = selectedNumber.innerText;
+  } else {                               // if we select a new space when there is a selected space
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.add("placedSpace");
+    selectedSpace = null;
+    selectedSpace = space;
+    selectedSpace.classList.add("selectedSpace");
+    selectedSpace.innerText = selectedNumber.innerText;
+  }
+  
+}
+
+// Deletes the selected space
+function deleteSelectedSpace(space) {
+
+  if (space.classList.contains("defaultSpace") || space.innerText == "") {
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.remove("placedSpace");
+    selectedSpace = null;
+    return;
+  }
+
+  if (selectedSpace) {
+    selectedSpace.classList.remove("selectedSpace");
+  }
+
+  selectedSpace = space;
+  selectedSpace.classList.add("selectedSpace");
+  selectedSpace.classList.remove("placedSpace");
+  selectedSpace.innerText = "";
 }
 
 
