@@ -3,6 +3,8 @@ var selectedSpace = null;
 var placeSpace = false;
 var deleteSpace = false;
 var generatedBoard = null;
+var clone = [];
+var solvedBoard = null;
 
 // var lives = 0;
 
@@ -14,7 +16,7 @@ var generatedBoard = null;
 
 
 
-// Boards and Answers for Testing
+// BOARDS FOR TESTING
 
 var sudoku1 = [
   ["5","3",".",".","7",".",".",".","."],
@@ -39,7 +41,154 @@ var sudoku1Answer = [
   ["3","4","5","2","8","6","1","7","9"]];
 
 
-// SETUP
+
+
+
+
+
+
+
+
+
+  // SUDOKU SOLVER
+
+// Returns coords of next empty space, if none available, return False
+function findEmptySpace(board) {
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      if (board[row][col] == ".") {
+        return [row, col];
+      }
+    }
+  }
+  return null;
+};
+
+// Verifies that sapce is valid for enterring current digit
+function verifySpace(board, row, col, digit){
+
+  // Check Row
+  for (let space = 0; space < 9; space++){
+    if (board[row][space] == digit){
+      return false
+    }
+  };
+
+  board[row].forEach(function(element){
+    if (element == digit) {
+      return false
+    }
+  });
+
+  // Check Column
+  for (let r = 0; r < 9; r++){
+    if (board[r][col] == digit){
+      return false
+    }
+  }
+
+  // Check Box
+  var startRow = row - (row % 3);
+  var startCol = col - (col % 3);
+
+  for (let r = startRow; r < (startRow + 3); r++){
+    for (let c = startCol; c < (startCol + 3); c++) {
+      if (board[r][c] == digit){
+        return false
+      }
+    }
+  }
+
+  // Space is valid
+  return true
+};
+
+// Solves the given
+function solve(board){
+        
+  // if board is solved, return it
+  if (findEmptySpace(board) == null){
+    return board;
+  }
+
+  var space = findEmptySpace(board);
+  var row = space[0];
+  var col = space[1];
+
+  const DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+  for (let i = 0; i < 9; i++){
+    if (verifySpace(board, row, col, DIGITS[i])){
+      board[row][col] = DIGITS[i];
+
+      if (solve(board)){
+        return true;
+      }
+
+      board[row][col] = ".";
+    }
+  }
+
+  // board is unsolvable
+  return null;
+}
+
+function solveSudoku(board){
+  if (board == null) {
+    return null;
+  }
+
+  // if board is solvable, return it, otherwise return null
+  if (solve(board)){
+      return solve(board);
+  } else {
+      return null;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// CHECKER - Checks if the board is solved
+
+function checkIfSolved() {
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+
+      // If board does not match solution, return false
+      if (document.getElementById(r.toString() + "-" + c.toString()).innerText != solvedBoard[r][c]) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// APP SETUP FUNCTIONS
 
 window.onload = function() {
   setNumbers();
@@ -60,11 +209,18 @@ function setNumbers() {
 }
 
 // Sets the sodoku board
-// Spaces have ID: row-col ex. 3-4 for row 4, column 3.
+// Spaces have ID: row-col ex. 3-4 for row 3, column 4.
 // Rows and columns are from 0-8.
 function setBoard(board) {
 
   generatedBoard = board;
+
+  // clone board into global variable "clone"
+  generatedBoard.map(function(arr) {
+    clone.push(arr.slice());
+  });
+
+  solvedBoard = solveSudoku(clone);
 
   for(let r = 0; r < 9; r++) {
     for(let c = 0; c < 9; c++) {
@@ -92,6 +248,7 @@ function setBoard(board) {
   }
 }
 
+// Sets the delete button
 function setDelete() {
   var delete_button = document.createElement("div");
   delete_button.id = "delete_button";
@@ -100,6 +257,17 @@ function setDelete() {
   delete_button.addEventListener("click", selectDelete);
   document.getElementById("delete_container").appendChild(delete_button);
 }
+
+
+
+
+
+
+
+
+
+
+// SPACE PLACEMENT AND DELETION FUNCTIONALITY
 
 // Allows user to select numbers in the bottom bar
 function selectNumber() {
@@ -196,6 +364,9 @@ function fillSpace(space) {
     selectedSpace.innerText = selectedNumber.innerText;
   }
 
+  if (checkIfSolved()) {
+    setTimeout(function() { alert("Board is solved!"); }, 300);
+  }
 }
 
 // Deletes the selected space
@@ -220,116 +391,8 @@ function deleteSelectedSpace(space) {
 
 
 
-// SUDOKU SOLVER
-
-// Returns coords of next empty space, if none available, return False
-function findEmptySpace(board) {
-  for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-      if (board[row][col] == ".") {
-        return [row, col];
-      }
-    }
-  }
-  return null;
-};
-
-// Verifies that sapce is valid for enterring current digit
-function verifySpace(board, row, col, digit){
-
-  // Check Row
-  for (let space = 0; space < 9; space++){
-    if (board[row][space] == digit){
-      return false
-    }
-  };
-
-  board[row].forEach(function(element){
-    if (element == digit) {
-      return false
-    }
-  });
-
-  // Check Column
-  for (let r = 0; r < 9; r++){
-    if (board[r][col] == digit){
-      return false
-    }
-  }
-
-  // Check Box
-  var startRow = row - (row % 3);
-  var startCol = col - (col % 3);
-
-  for (let r = startRow; r < (startRow + 3); r++){
-    for (let c = startCol; c < (startCol + 3); c++) {
-      if (board[r][c] == digit){
-        return false
-      }
-    }
-  }
-
-  // Space is valid
-  return true
-};
-
-// Solves the given
-function solve(board){
-        
-  // if board is solved, return it
-  if (findEmptySpace(board) == null){
-    return board;
-  }
-
-  var space = findEmptySpace(board);
-  var row = space[0];
-  var col = space[1];
-
-  const DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-  for (let i = 0; i < 9; i++){
-    if (verifySpace(board, row, col, DIGITS[i])){
-      board[row][col] = DIGITS[i];
-
-      if (solve(board)){
-        return true;
-      }
-
-      board[row][col] = ".";
-    }
-  }
-
-  // board is unsolvable
-  return null;
-}
-
-function solveSudoku(board){
-
-    // if board is solvable, return it, otherwise return null
-    if (solve(board)){
-        return solve(board);
-    } else {
-        return null;
-    }
-}
 
 
-// Check if Sudoku is Solved
-
-function checkIfSolved() {
-
-  for (let r = 0; r < 9; r++) {
-    for (let c = 0; c < 9; c++) {
-
-      // If board does not match solution, return false
-      if (document.getElementById(r.toString() + "-" + c.toString()).innerText != (solveSudoku(generatedBoard))[r][c]) {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
 
 
 
