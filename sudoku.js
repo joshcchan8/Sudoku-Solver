@@ -107,6 +107,11 @@ function selectNumber() {
   if (deleteSpace == true) {
     document.getElementById("delete_button").classList.remove("deleteSelected");
     deleteSpace = false;
+    if (selectedSpace) {
+      selectedSpace.classList.remove("selectedSpace");
+      selectedSpace.classList.remove("placedSpace");
+      selectedSpace = null;
+    }
   }
 
   if (!selectedNumber) {
@@ -128,9 +133,11 @@ function selectNumber() {
 // Allows user to select the delete button
 function selectDelete() {
 
-  selectedSpace.classList.remove("selectedSpace");
-  selectedSpace.classList.add("placedSpace");
-  selectedSpace = null;
+  if (selectedSpace != "" && selectedSpace != null) {
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.add("placedSpace");
+    selectedSpace = null;
+  }
 
   if (selectedNumber) {
     selectedNumber.classList.remove("selectedNumber");
@@ -188,7 +195,7 @@ function fillSpace(space) {
     selectedSpace.classList.add("selectedSpace");
     selectedSpace.innerText = selectedNumber.innerText;
   }
-  
+
 }
 
 // Deletes the selected space
