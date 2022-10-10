@@ -186,14 +186,13 @@ function checkIfSolved() {
 
 
 
-
-
 // APP SETUP FUNCTIONS
 
 window.onload = function() {
   setNumbers();
   setBoard(sudoku1);
   setDelete();
+  setReset();
 }
 
 // Sets the panel for choosing numbers
@@ -258,7 +257,16 @@ function setDelete() {
   document.getElementById("delete_container").appendChild(delete_button);
 }
 
-
+// Sets the reset board button
+function setReset() {
+  var reset_button = document.createElement("div");
+  reset_button.id = "reset_button";
+  reset_button.innerText = "Reset";
+  reset_button.classList.add("reset_button");
+  reset_button.addEventListener("mousedown", resetBoard);
+  reset_button.addEventListener("mouseup", release);
+  document.getElementById("menu").appendChild(reset_button);
+}
 
 
 
@@ -393,6 +401,56 @@ function deleteSelectedSpace(space) {
 
 
 
+
+
+
+
+
+
+
+// MENU BUTTONS FUNCTIONALITY
+
+// Resets all the spaces on the board and adds highlight to button
+function resetBoard() {
+  this.classList.add("resetSelected");
+
+  if (selectedNumber) {
+    selectedNumber.classList.remove("selectedNumber");
+    selectedNumber = null;
+    placeSpace = false;
+  }
+
+  if (deleteSpace) {
+    document.getElementById("delete_button").classList.remove("deleteSelected");
+    deleteSpace = false;
+  }
+
+  if (selectedSpace) {
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.remove("placedSpace");
+    selectedSpace = null;
+    placeSpace = false;
+  }
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+
+      let space = document.getElementById(r.toString() + "-" + c.toString())
+
+      if (space.innerText != "" && !space.classList.contains("defaultSpace")) {
+        space.innerText = "";
+        space.classList.remove("selectedSpace");
+        space.classList.remove("placedSpace");
+      }
+    }
+  }
+
+}
+
+// When reset button is release, remove highlist
+function release() {
+  this.classList.remove("resetSelected");
+}
 
 
 

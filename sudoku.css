@@ -38,7 +38,7 @@ html {
     width: 200px;
 }
 
-.menu {
+#menu {
     background-color: rgb(11, 56, 75);
     border: 3px solid #3fa1de;
     border-radius: 5px;
@@ -46,7 +46,29 @@ html {
     width: 200px;
     margin: 3vh 0 5vh 0;
     padding: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
+}
+
+.reset_button {
+    background-color: rgb(11, 56, 75);
+    border: 3px solid #3fa1de;
+    border-radius: 5px;
+    height: 20%;
+    width: 80%;
+    cursor: pointer;
+
+    /* Text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #d3e9f7;
 }
 
 #delete_container {
@@ -165,6 +187,11 @@ html {
 }
 
 .deleteSelected {
+    background-color: #8ec0eb;
+    color: #0978bd;
+}
+
+.resetSelected {
     background-color: #8ec0eb;
     color: #0978bd;
 }
