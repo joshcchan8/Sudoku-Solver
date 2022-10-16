@@ -50,7 +50,7 @@ var sudoku1Answer = [
 
 
 
-  // SUDOKU SOLVER
+// SUDOKU SOLVER
 
 // Returns coords of next empty space, if none available, return False
 function findEmptySpace(board) {
@@ -70,20 +70,20 @@ function verifySpace(board, row, col, digit){
   // Check Row
   for (let space = 0; space < 9; space++){
     if (board[row][space] == digit){
-      return false
+      return false;
     }
   };
 
   board[row].forEach(function(element){
     if (element == digit) {
-      return false
+      return false;
     }
   });
 
   // Check Column
   for (let r = 0; r < 9; r++){
     if (board[r][col] == digit){
-      return false
+      return false;
     }
   }
 
@@ -160,6 +160,8 @@ function solveSudoku(board){
 
 // CHECKER - Checks if the board is solved
 
+// Checks if the board is solved
+
 function checkIfSolved() {
 
   for (let r = 0; r < 9; r++) {
@@ -173,6 +175,20 @@ function checkIfSolved() {
   }
 
   return true;
+}
+
+// Determines what happens if the board is solved
+
+function solvedAnimation() {
+  
+  setTimeout(function() { 
+    document.getElementById("solved_description").innerText = "The board has been solved! Congratulations!";
+  }, 50);
+
+  setTimeout(function() { 
+    document.getElementById("solved_description").innerText = "";
+  }, 3050);
+
 }
 
 
@@ -193,6 +209,7 @@ window.onload = function() {
   setBoard(sudoku1);
   setDelete();
   setReset();
+  setSolve();
 }
 
 // Sets the panel for choosing numbers
@@ -267,6 +284,18 @@ function setReset() {
   reset_button.addEventListener("mouseup", release);
   document.getElementById("menu").appendChild(reset_button);
 }
+
+// Sets the solve board button
+function setSolve() {
+  var solve_button = document.createElement("div");
+  solve_button.id = "solve_button";
+  solve_button.innerText = "Solve";
+  solve_button.classList.add("solve_button");
+  solve_button.addEventListener("mousedown", solveBoard);
+  solve_button.addEventListener("mouseup", release);
+  document.getElementById("menu").appendChild(solve_button);
+}
+
 
 
 
@@ -373,7 +402,7 @@ function fillSpace(space) {
   }
 
   if (checkIfSolved()) {
-    setTimeout(function() { alert("Board is solved!"); }, 300);
+    solvedAnimation();
   }
 }
 
@@ -412,7 +441,7 @@ function deleteSelectedSpace(space) {
 
 // Resets all the spaces on the board and adds highlight to button
 function resetBoard() {
-  this.classList.add("resetSelected");
+  this.classList.add("notSelected");
 
   if (selectedNumber) {
     selectedNumber.classList.remove("selectedNumber");
@@ -444,12 +473,47 @@ function resetBoard() {
       }
     }
   }
-
 }
 
-// When reset button is release, remove highlist
+function solveBoard() {
+  this.classList.add("notSelected");
+
+  if (selectedNumber) {
+    selectedNumber.classList.remove("selectedNumber");
+    selectedNumber = null;
+    placeSpace = false;
+  }
+
+  if (deleteSpace) {
+    document.getElementById("delete_button").classList.remove("deleteSelected");
+    deleteSpace = false;
+  }
+
+  if (selectedSpace) {
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.remove("placedSpace");
+    selectedSpace = null;
+    placeSpace = false;
+  }
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+
+      let space = document.getElementById(r.toString() + "-" + c.toString())
+
+      if (!space.classList.contains("defaultSpace")) {
+        space.innerText = solvedBoard[r][c];
+        space.classList.add("placedSpace");
+      }
+    }
+  }
+
+  solvedAnimation();
+}
+
+// When button is released, remove highlist
 function release() {
-  this.classList.remove("resetSelected");
+  this.classList.remove("notSelected");
 }
 
 
