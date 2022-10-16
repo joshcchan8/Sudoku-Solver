@@ -50,6 +50,73 @@ var sudoku1Answer = [
 
 
 
+
+
+// SUDOKU GENERATOR
+
+// Creates a solveable sudoku board
+function createSudoku() {
+
+  var solved = false;
+
+  while (!solved) {
+
+    var count = 30;
+    var board = [
+      [".",".",".",".",".",".",".",".","."],
+      [".",".",".",".",".",".",".",".","."],
+      [".",".",".",".",".",".",".",".","."],
+      [".",".",".",".",".",".",".",".","."],
+      [".",".",".",".",".",".",".",".","."],
+      [".",".",".",".",".",".",".",".","."],
+      [".",".",".",".",".",".",".",".","."],
+      [".",".",".",".",".",".",".",".","."],
+      [".",".",".",".",".",".",".",".","."]
+    ];
+    
+    while (true) {
+      
+      if (count == 0) {
+
+        var cloned = [];
+
+        board.map(function(arr) {
+          cloned.push(arr.slice());
+        });
+
+        if (solveSudoku(cloned) != null) {
+          solved = true;
+        } 
+        break;
+      }
+  
+      var randomValue = Math.floor(Math.random() * 10) + 1;
+      var r = Math.floor(Math.random() * 9);
+      var c = Math.floor(Math.random() * 9);
+  
+      if (board[r][c] == "." && verifySpace(board, r, c, randomValue)) {
+        board[r][c] = randomValue.toString();
+        count -= 1;
+      }
+    }
+  }
+
+  return board;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // SUDOKU SOLVER
 
 // Returns coords of next empty space, if none available, return False
@@ -206,10 +273,11 @@ function solvedAnimation() {
 
 window.onload = function() {
   setNumbers();
-  setBoard(sudoku1);
+  setBoard();
   setDelete();
   setReset();
   setSolve();
+  setNewGame();
 }
 
 // Sets the panel for choosing numbers
@@ -227,9 +295,9 @@ function setNumbers() {
 // Sets the sodoku board
 // Spaces have ID: row-col ex. 3-4 for row 3, column 4.
 // Rows and columns are from 0-8.
-function setBoard(board) {
+function setBoard() {
 
-  generatedBoard = board;
+  generatedBoard = createSudoku();
 
   // clone board into global variable "clone"
   generatedBoard.map(function(arr) {
@@ -253,8 +321,8 @@ function setBoard(board) {
       }
 
       // Leaves space blank unless there is a value.
-      if (board[r][c] != ".") {
-        space.innerText = board[r][c];
+      if (generatedBoard[r][c] != ".") {
+        space.innerText = generatedBoard[r][c];
         space.classList.add("defaultSpace");
       }
 
@@ -295,6 +363,20 @@ function setSolve() {
   solve_button.addEventListener("mouseup", release);
   document.getElementById("menu").appendChild(solve_button);
 }
+
+// Sets the new game button
+function setNewGame() {
+  var new_game_button = document.createElement("div");
+  new_game_button.id = "new_game_button";
+  new_game_button.innerText = "New Game";
+  new_game_button.classList.add("new_game_button");
+  new_game_button.addEventListener("mousedown", generateBoard);
+  new_game_button.addEventListener("mouseup", release);
+  document.getElementById("menu").appendChild(new_game_button);
+}
+
+
+
 
 
 
@@ -475,6 +557,7 @@ function resetBoard() {
   }
 }
 
+// Solves the board and produces solved description
 function solveBoard() {
   this.classList.add("notSelected");
 
@@ -499,7 +582,7 @@ function solveBoard() {
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
 
-      let space = document.getElementById(r.toString() + "-" + c.toString())
+      let space = document.getElementById(r.toString() + "-" + c.toString());
 
       if (!space.classList.contains("defaultSpace")) {
         space.innerText = solvedBoard[r][c];
@@ -510,6 +593,56 @@ function solveBoard() {
 
   solvedAnimation();
 }
+
+// generates a new, solveable sudoku board.
+function generateBoard() {
+  this.classList.add("notSelected");
+
+  if (selectedNumber) {
+    selectedNumber.classList.remove("selectedNumber");
+    selectedNumber = null;
+    placeSpace = false;
+  }
+
+  if (deleteSpace) {
+    document.getElementById("delete_button").classList.remove("deleteSelected");
+    deleteSpace = false;
+  }
+
+  if (selectedSpace) {
+    selectedSpace.classList.remove("selectedSpace");
+    selectedSpace.classList.remove("placedSpace");
+    selectedSpace = null;
+    placeSpace = false;
+  }
+
+  generatedBoard = createSudoku();
+
+  clone = [];
+  generatedBoard.map(function(arr) {
+    clone.push(arr.slice());
+  });
+
+  solvedBoard = solveSudoku(clone);
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+
+      let space = document.getElementById(r.toString() + "-" + c.toString());
+      space.classList.remove("defaultSpace");
+      space.classList.remove("placedSpace");
+      space.classList.remove("selectedSpace");
+
+      if (generatedBoard[r][c] == ".") {
+        space.innerText = "";
+      } else {
+        space.innerText = generatedBoard[r][c];
+        space.classList.add("defaultSpace");
+      }
+    }
+  }
+}
+
 
 // When button is released, remove highlist
 function release() {
