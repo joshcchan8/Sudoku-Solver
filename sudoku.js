@@ -61,7 +61,7 @@ function createSudoku() {
 
   while (!solved) {
 
-    var count = 30;
+    var count = Math.floor(Math.random() * (35 - 25 + 1) + 25);
     var board = [
       [".",".",".",".",".",".",".",".","."],
       [".",".",".",".",".",".",".",".","."],
@@ -90,7 +90,7 @@ function createSudoku() {
         break;
       }
   
-      var randomValue = Math.floor(Math.random() * 10) + 1;
+      var randomValue = Math.floor(Math.random() * 9) + 1;
       var r = Math.floor(Math.random() * 9);
       var c = Math.floor(Math.random() * 9);
   
